@@ -1,5 +1,7 @@
-@import 'tailwindcss';
-
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 @theme {
   --font-sans: 'DM Sans', system-ui, sans-serif;
 }
