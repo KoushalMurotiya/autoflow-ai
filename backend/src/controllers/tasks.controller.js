@@ -15,6 +15,15 @@ export async function getTasks(_req, res, next) {
   }
 }
 
+export async function deleteTasks(_req, res, next) {
+  try {
+    await taskService.deleteAllTasks();
+    res.json({ message: 'All tasks cleared' });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function patchTask(req, res, next) {
   try {
     const { id } = req.params;

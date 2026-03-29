@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
+  const [clearing, setClearing] = useState(false);
 
   const loadAlerts = useCallback(async () => {
     try {
@@ -113,6 +114,29 @@ export default function Dashboard() {
     []
   );
 
+  const handleClearAll = useCallback(async () => {
+    if (!window.confirm('Are you sure you want to clear all tasks? This cannot be undone.')) {
+      return;
+    }
+    setClearing(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API_BASE}/tasks`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to clear tasks');
+      }
+      setTasks([]);
+      setDelayedAlerts([]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to clear tasks');
+    } finally {
+      setClearing(false);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,#ebe6dc_0%,#f5f2eb_45%,#f0ebe3_100%)] text-[#2a2620]">
       <div className="pointer-events-none fixed inset-0 bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%3E%3Cpath%20d%3D%22M0%2040h40M40%200v40%22%20stroke%3D%22%23221f1c%22%20stroke-opacity%3D%22.04%22%20stroke-width%3D%22.5%22/%3E%3C/svg%3E')] opacity-70" />
@@ -125,17 +149,27 @@ export default function Dashboard() {
           >
             ← Meeting input
           </Link>
-          <button
-            type="button"
-            onClick={() => {
-              loadTasks();
-              loadAlerts();
-            }}
-            disabled={loading}
-            className="rounded-lg border border-[#cfc5b8] bg-white/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#5c4d3d] transition hover:bg-[#f5f2eb] disabled:opacity-50"
-          >
-            Refresh
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleClearAll}
+              disabled={loading || clearing}
+              className="rounded-lg border border-red-200 bg-red-50/50 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-red-700 transition hover:bg-red-100 disabled:opacity-50"
+            >
+              {clearing ? 'Clearing...' : 'Clear All'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                loadTasks();
+                loadAlerts();
+              }}
+              disabled={loading || clearing}
+              className="rounded-lg border border-[#cfc5b8] bg-white/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#5c4d3d] transition hover:bg-[#f5f2eb] disabled:opacity-50"
+            >
+              Refresh
+            </button>
+          </div>
         </nav>
 
         <header className="mb-8">

@@ -18,3 +18,4 @@ drop policy if exists "tasks_update_all" on public.tasks;
 create policy "tasks_select_all" on public.tasks for select using (true);
 create policy "tasks_insert_all" on public.tasks for insert with check (true);
 create policy "tasks_update_all" on public.tasks for update using (true) with check (true);
+create policy "tasks_delete_all" on public.tasks for delete using (true);

@@ -57,6 +57,23 @@ export async function getAllTasks() {
   return data ?? [];
 }
 
+export async function deleteAllTasks() {
+  const supabase = getSupabaseClient();
+  // Standard way to delete all rows in Supabase/PostgREST when no primary key is provided is using .neq or similar
+  // If no filters are provided, it might throw an error depending on the API.
+  // Using .neq('id', '00000000-0000-0000-0000-000000000000') should work reliably for UUIDs.
+  const { error } = await supabase
+    .from('tasks')
+    .delete()
+    .neq('id', '00000000-0000-0000-0000-000000000000');
+
+  if (error) {
+    throw mapSupabaseError(error, 'Failed to clear tasks');
+  }
+
+  return true;
+}
+
 export async function updateTaskStatus(id, status) {
   if (!id || typeof id !== 'string' || !UUID_RE.test(id.trim())) {
     throw badRequest('Invalid task id');
