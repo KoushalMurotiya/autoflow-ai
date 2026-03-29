@@ -137,6 +137,39 @@ Serve the `frontend/dist` static files behind your host; configure the API base 
 3. Open **Task dashboard** — confirm tasks appear with owners and deadlines.
 4. Use status controls to mark work **done**; past-due items can be escalated to **delayed** and show under **Alerts**.
 
+---
+
+## 🧪 Demo Meeting Inputs (Try These)
+
+Use the following sample meeting notes to test the system:
+
+### 🟢 Demo 1 — Daily Standup
+Rohit will complete the UI design by tomorrow.  
+Aman will test the backend API by Friday.  
+Priya will update documentation by Monday.
+
+### 🟢 Demo 2 — Product Planning
+Karan will finalize feature list by next week.  
+Sneha will design wireframes by Wednesday.  
+Rahul will prepare project timeline by Friday.
+
+### 🟢 Demo 3 — Bug Fix Meeting
+Ankit will fix login issue by today.  
+Neha will resolve payment bug by tomorrow.  
+Vikas will test all fixes by Friday.
+
+### 🟢 Demo 4 — Marketing Strategy
+Simran will create social media plan by Monday.  
+Arjun will design ad creatives by Thursday.  
+Megha will analyze campaign performance by next week.
+
+### 🟢 Demo 5 — Hackathon Team Meeting
+Koushal will handle frontend development by tomorrow.  
+Devanshu will integrate backend APIs by Friday.  
+Team will finalize presentation by Sunday.
+
+---
+
 ## API overview (development)
 
 With the Vite dev server, the UI calls paths under `/api`, which proxy to `http://127.0.0.1:5000` (see `frontend/vite.config.js`).
